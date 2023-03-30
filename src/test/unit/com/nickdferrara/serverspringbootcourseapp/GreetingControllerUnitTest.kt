@@ -15,7 +15,6 @@ import org.springframework.test.web.reactive.server.WebTestClient
 
 @WebMvcTest(controllers = [GreetingController::class])
 @AutoConfigureWebTestClient
-
 class GreetingControllerUnitTest {
 
     @MockkBean
@@ -28,6 +27,7 @@ class GreetingControllerUnitTest {
     fun retrieveGreeting() {
         val name = "Nicholas"
         every { greetingServiceMock.retrieveGreeting(any()) } returns  "Hello $name"
+
         val result = webTestClient.get()
             .uri("/v1/greetings/{name}", name)
             .exchange()
