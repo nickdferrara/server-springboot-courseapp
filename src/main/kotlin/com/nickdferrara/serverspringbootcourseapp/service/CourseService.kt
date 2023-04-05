@@ -1,6 +1,7 @@
 package com.nickdferrara.serverspringbootcourseapp.service
 
 import com.nickdferrara.serverspringbootcourseapp.dto.CourseDto
+import com.nickdferrara.serverspringbootcourseapp.entity.Course
 import com.nickdferrara.serverspringbootcourseapp.extension.toCourse
 import com.nickdferrara.serverspringbootcourseapp.extension.toDto
 import com.nickdferrara.serverspringbootcourseapp.repository.CourseRepository
@@ -18,5 +19,11 @@ class CourseService(
         courseRepository.save(courseEntity)
         logger.info { "Saved course: $courseEntity" }
         return courseEntity.toDto()
+    }
+
+    fun retrieveAllCourses(): List<CourseDto> {
+        logger.info { "Retrieving all courses" }
+        return courseRepository.findAll()
+            .map(Course::toDto)
     }
 }
