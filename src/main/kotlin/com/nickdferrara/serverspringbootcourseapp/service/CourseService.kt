@@ -45,4 +45,8 @@ class CourseService(
             throw CourseNotFoundException("Course not found: $courseId")
         }
     }
+
+    fun deleteCourse(courseId: Int): Any {
+
+    }
 }

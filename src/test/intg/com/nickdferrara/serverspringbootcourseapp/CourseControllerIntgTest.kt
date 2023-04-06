@@ -1,6 +1,7 @@
 package com.nickdferrara.serverspringbootcourseapp
 
 import com.nickdferrara.serverspringbootcourseapp.dto.CourseDto
+import com.nickdferrara.serverspringbootcourseapp.entity.Course
 import com.nickdferrara.serverspringbootcourseapp.repository.CourseRepository
 import com.nickdferrara.serverspringbootcourseapp.util.courseEntityList
 import org.junit.jupiter.api.Assertions
@@ -66,5 +67,34 @@ class CourseControllerIntgTest() {
             .responseBody
 
         assertEquals(3, courseDtos!!.size)
+    }
+
+    @Test
+    fun updateCourse() {
+        val course = Course(
+            null,
+            "Algorithms And Data Structures",
+            "Non-Fiction"
+        )
+
+        courseRepository.save(course)
+
+        val updatedCourseDto = CourseDto(
+            null,
+            "Algorithms And Data Structures Part 2",
+            "Non-Fiction"
+        )
+
+        val updatedCourse = webTestClient
+            .put()
+            .uri("/v1/courses/{courseId}", course.id)
+            .bodyValue(updatedCourseDto)
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(CourseDto::class.java)
+            .returnResult()
+            .responseBody
+
+        assertEquals("Algorithms And Data Structures Part 2", updatedCourse?.name)
     }
 }
