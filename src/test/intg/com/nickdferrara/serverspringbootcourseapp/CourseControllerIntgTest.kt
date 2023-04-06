@@ -97,4 +97,21 @@ class CourseControllerIntgTest() {
 
         assertEquals("Algorithms And Data Structures Part 2", updatedCourse?.name)
     }
+
+    @Test
+    fun deleteCourse() {
+        val course = Course(
+            null,
+            "Algorithms And Data Structures",
+            "Non-Fiction"
+        )
+
+        courseRepository.save(course)
+
+        webTestClient
+            .delete()
+            .uri("/v1/courses/{courseId}", course.id)
+            .exchange()
+            .expectStatus().isNoContent
+    }
 }
