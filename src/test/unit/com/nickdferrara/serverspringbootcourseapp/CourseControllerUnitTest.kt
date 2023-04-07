@@ -2,6 +2,7 @@ package com.nickdferrara.serverspringbootcourseapp
 
 import com.nickdferrara.serverspringbootcourseapp.controller.CourseController
 import com.nickdferrara.serverspringbootcourseapp.dto.CourseDto
+import com.nickdferrara.serverspringbootcourseapp.entity.Course
 import com.nickdferrara.serverspringbootcourseapp.service.CourseService
 import com.nickdferrara.serverspringbootcourseapp.util.mockCourseDto
 import com.ninjasquad.springmockk.MockkBean
@@ -53,7 +54,10 @@ class CourseControllerUnitTest {
         every { courseServiceMock.retrieveAllCourses() }.returnsMany(
             listOf(
                 mockCourseDto(id = 1),
-                mockCourseDto(id = 2, "Hardware and Design")
+                mockCourseDto(
+                    id = 2,
+                    "Hardware and Design"
+                )
             )
         )
 
@@ -67,5 +71,37 @@ class CourseControllerUnitTest {
             .responseBody
 
         Assertions.assertEquals(2, courseDtos!!.size)
+    }
+
+    @Test
+    fun updateCourse() {
+        val course = Course(
+            null,
+            "Algorithms And Data Structures",
+            "Non-Fiction"
+        )
+
+        every { courseServiceMock.updateCourse(any(), any()) } returns  mockCourseDto(
+            id = 100,
+            "Algorithms And Data Structures Part 2"
+        )
+
+        val updatedCourseDto = CourseDto(
+            null,
+            "Algorithms And Data Structures Part 2",
+            "Non-Fiction"
+        )
+
+        val updatedCourse = webTestClient
+            .put()
+            .uri("/v1/courses/{courseId}", 100)
+            .bodyValue(updatedCourseDto)
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(CourseDto::class.java)
+            .returnResult()
+            .responseBody
+
+        Assertions.assertEquals("Algorithms And Data Structures Part 2", updatedCourse?.name)
     }
 }
