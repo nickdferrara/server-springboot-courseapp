@@ -1,5 +1,6 @@
 package com.nickdferrara.serverspringbootcourseapp.util
 
+import com.nickdferrara.serverspringbootcourseapp.dto.CourseDto
 import com.nickdferrara.serverspringbootcourseapp.entity.Course
 
 fun courseEntityList() = listOf(
@@ -16,4 +17,14 @@ fun courseEntityList() = listOf(
         "Wiremock for Kotlin Developers",
         "Non-Fiction" ,
     )
+)
+
+fun mockCourseDto(
+    id: Int? = null,
+    name: String = "Spring Boot and Kotlin",
+    category: String = "Non-Fiction",
+) = CourseDto(
+    id,
+    name,
+    category,
 )
